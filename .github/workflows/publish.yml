@@ -1,6 +1,10 @@
 name: Publish Docker image
 
 on:
+  # This block enables the manual trigger
+  workflow_dispatch:
+
+  # This trigger remains active
   push:
     branches:
       - main
