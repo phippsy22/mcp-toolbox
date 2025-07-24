@@ -7,7 +7,7 @@ on:
   # This trigger remains active
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build-and-push-image:
@@ -33,7 +33,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract metadata (tags, labels) for Docker
+      - name: Extract metadata (tags, labels) for Dockergit
         id: meta
         uses: docker/metadata-action@v5
         with:
