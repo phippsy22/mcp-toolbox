@@ -17,29 +17,47 @@ This guide is for developers who want to quickly deploy and use a powerful set o
 
 ### Getting Started
 
+#### Production (Published Image)
+
+1.  **Prerequisites:** You'll need Docker installed.
+2.  **Run the Server:** You can run the server directly from the published Docker image.
+    ```bash
+    docker run -d \
+      -p 8049:8049 \
+      -e GOOGLE_API_KEY="YOUR_API_KEY" \
+      -e GOOGLE_CX="YOUR_SEARCH_ENGINE_ID" \
+      ghcr.io/phippsy22/mcp-toolbox:latest
+    ```
+
+#### Local Development (Building from Source)
+
 1.  **Prerequisites:** You'll need Docker and Docker Compose installed.
 2.  **Configuration:**
-    *   This project uses a `.env` file located in the parent `compose/mcps/` directory to manage secrets.
-    *   Create a file named `.env` in `compose/mcps/` and add your Google Custom Search credentials:
-        ```env
-        # Google Custom Search API Key
-        GOOGLE_API_KEY="YOUR_API_KEY"
-        GOOGLE_CX="YOUR_SEARCH_ENGINE_ID"
+    *   This project uses a local `.env` file for API keys. An example file is provided.
+    *   Copy the example environment file to create your local configuration:
+        ```bash
+        cp .env.example .env
         ```
-3.  **Run the Server:** You can run the server directly from the published Docker image.
+    *   Open the new `.env` file and add your Google Custom Search credentials. The server will run without these keys, but the `web_search` tool will not be functional.
+3.  **Build and Run the Server:** Use Docker Compose to build and run the container. This will use the `docker-compose.yml` file in this directory.
     ```bash
-    docker run -d -p 8049:8049 ghcr.io/phippsy22/mcp-toolbox:latest
+    docker compose up --build
     ```
-4.  **Connect Your Client:** Configure your MCP client to connect to the server. An example `cline_mcp_settings.json` entry would look like this:
+    The server will be available at `http://localhost:8050`.
+4.  **Connect Your Client:** Configure your MCP client to connect to the server.
+    *   For the **production image**, use port `8049`.
+    *   For **local development**, use port `8050`.
+
+    An example `cline_mcp_settings.json` entry for local development would look like this:
     ```json
     {
       "mcpServers": {
-        "toolbox-mcp": {
+        "toolbox-mcp-local": {
           "autoApprove": [],
           "disabled": false,
           "timeout": 360,
           "type": "sse",
-          "url": "http://localhost:8049/mcp"
+          "url": "http://localhost:8050/mcp"
         }
       }
     }
